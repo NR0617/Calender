@@ -57,7 +57,7 @@ public class Calender {
         int syear = 1970;
         int smonth = 1;
         int sday = 1;
-        final int STANDARD_WEEKDAY = 3; // 1970/JAN/1st = Thursday
+        final int STANDARD_WEEKDAY = 4; // 1970/JAN/1st = Thursday
 
         int count = 0;
 
@@ -73,7 +73,7 @@ public class Calender {
         }
 
         // count = day -1 안하는 이유는 직접 생각해보세요
-        count += day;
+        count += day - 1;
 //        System.out.println(count);
 
         int weekday = (count + STANDARD_WEEKDAY) % 7;
