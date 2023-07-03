@@ -106,22 +106,20 @@ public class Prompt {
         }
         c.printCalender(year, month); // 참조를 넘겨주는 것
         System.out.printf("\n%d월은 %d일까지 있습니다.\n", month, c.getMaxDaysOfMonth(year, month));
-
     }
 
 
-    private void cmdSearch(Scanner s, Calender c) {
+    private void cmdSearch(Scanner s, Calender c) throws ParseException {
         System.out.println();
         System.out.println("날짜를 입력해 주세요(\"yyyy-mm-dd\")");
         String date = s.next();
-        String plan = null;
-        try {
-            plan = c.searchPlan(date);
-        } catch (ParseException e) {
-            System.err.println("일정 검색중 오류가 발생하였습니다");
-            throw new RuntimeException(e);
+        PlanItem plan;
+        plan = c.searchPlan(date);
+        if(plan != null) {
+            System.out.println(plan.detail);
+        } else {
+            System.out.println("일정이 없습니다.");
         }
-        System.out.println(plan);
     }
 
     private void cmdRegister(Scanner s, Calender c) throws ParseException {
@@ -130,13 +128,15 @@ public class Prompt {
         String text = "";
         System.out.println("일정을 입력해주세요(문장의 끝에 ;을 입력해주세요)");
 //        String text = s.nextLine(); -> 문장을 잘 받아오지 못하네요
+        String word;
         while (true) {
-            String word = s.next();
-            text += word + " ";
+            word = s.next();
             if (word.endsWith(";")) {
                 break;
             }
+            text += word + " ";
         }
+        text += word.replace(";","");
 
         c.registerPlan(date, text);
     }
