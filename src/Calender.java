@@ -1,7 +1,34 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 public class Calender {
     private static final int[] MAX_DAYS = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] LEAP_MAX_DAYS = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    private int weekday;
+
+    private HashMap<Date, String> planMap;
+
+    public Calender() {
+        // 뭔가를 저장할 때 해시맵 또는 해시테이블 이용
+        planMap = new HashMap<Date, String>();
+    }
+
+    /*
+        @param date ex: "2017-06-20"
+        @param plan
+     */
+    public void registerPlan(String strDate, String plan) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+      //  System.out.println(date);
+        planMap.put(date, plan); // 일정을 저장
+    }
+
+    public String searchPlan(String strDate) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+        String plan = planMap.get(date);
+        return plan;
+    }
 
     public boolean isLeapYear(int year) {
         if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
@@ -25,7 +52,7 @@ public class Calender {
         System.out.println("----------------------------");
 
         // get weekday automatically
-        weekday = getWeekday(year, month, 1);
+        int weekday = getWeekday(year, month, 1);
         // print blank space
         for (int j = 0; j < weekday; j++) {
             System.out.print("    ");
@@ -81,19 +108,20 @@ public class Calender {
     }
 
     // simple test code here
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Calender c = new Calender();
 //        c.getWeekday(1970, 5, 1);
 //        c.getWeekday(1971, 5, 1);
 //        c.getWeekday(1972, 5, 1);
 //        c.getWeekday(1973, 5, 1);
-        System.out.println(c.getWeekday(1970, 1, 1) == 3);
-        System.out.println(c.getWeekday(1971, 1, 1) == 4);
-        System.out.println(c.getWeekday(1972, 1, 1) == 5);
-        System.out.println(c.getWeekday(1973, 1, 1) == 0);
-        System.out.println(c.getWeekday(1974, 1, 1) == 1);
+        System.out.println(c.getWeekday(1970, 1, 1) == 4);
+        System.out.println(c.getWeekday(1971, 1, 1) == 5);
+        System.out.println(c.getWeekday(1972, 1, 1) == 6);
+        System.out.println(c.getWeekday(1973, 1, 1) == 1);
+        System.out.println(c.getWeekday(1974, 1, 1) == 2);
 
-
+        c.registerPlan("2017-06-23", "Let's eat beef");
+        System.out.println(c.searchPlan("2017-06-23").equals(("Let's eat beef")));
     }
 
 }
